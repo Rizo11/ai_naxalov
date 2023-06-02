@@ -1,0 +1,1 @@
+print("hello", file="day1.txt")
