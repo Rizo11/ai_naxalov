@@ -256,6 +256,61 @@ Review of basic Python 3 language concepts and syntax.
     # not like
     # help(np.sqrt())
     ```
+
+
+### 1.1.4 Numbers and Basic Calculations
+- `int` in python has infinite precision
+- The underscore `_` represents the result of the last executed statement in interactive mode
+- `math.factorial(x)` - returns `x!`
+
+### 1.1.5 random.choice(seq)
+- returns random object from given sequence (nature of sequence doesn't matter)
+    ```python
+    import random
+
+    random.choice([1, 2, 3, 4, 5, 6, 7])    # random number from given string
+
+    random.choice("abcdefg")                # random string from given string
+    ```
+
+### 1.1.6 Expressions and booleans
+- `True, False`
+- *boolean operations*
+    ```python
+    and
+    or
+    not
+    ```
+- *comparison opertions* work on single objects or sequences (compares each element in sequence)
+    ```python
+    [1, 2, 3] >= [1, 2, 4]       # False
+    [1, 2, 3] >= [1, 1, 1, 1]    # True
+    [1, 2, 3] >= [1, 2, 3, 4]    # False
+    ```
+    - `==` (same value) compares the content of 2 objects
+    ```python
+    [1, 2] == [1, 2]    # True
+    [1, 2] == [1, 3]    # False
+    ```
+    - `is` (same identity) compares the references, are they the same object or not
+    ```python
+    [1, 2] is [1, 2]            # False
+    [1, 2] is [1, 3]            # False
+    [1, 2] is not [1, 2]        # True
+
+
+    x = [1, 2]
+    y = x
+
+    y is x                      # True
+
+    y = x[:]
+    
+    x is y                      # False
+    x == y                      # True
+    ```
+    - when comparing `float == int`, python converts the `int` to `float` and compares them
+
 ## Part 1.2
 
 # Week 2: Python Libraries and Concepts used in Research
