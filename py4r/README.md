@@ -1,3 +1,27 @@
+### Table of Contents
+- [Week 1: Basics of Python 3](#week-1-basics-of-python-3)
+  - [Part 1.1: Objects and Methods](#part-11-objects-and-methods)
+    - [1.1.2 Objects](#112-objects)
+    - [1.1.3 Modules and Methods](#113-modules-and-methods)
+    - [1.1.4 Numbers and Basic Calculations](#114-numbers-and-basic-calculations)
+    - [1.1.5 random.choice(seq)](#115-randomchoiceseq)
+    - [1.1.6 Expressions and booleans](#116-expressions-and-booleans)
+  - [Part 1.2: Sequence objects](#part-12-sequence-objects)
+    - [1.2.1](#121)
+    - [1.2.2 Lists](#122-lists)
+    - [1.2.3 Tuples](#123-tuples)
+    - [1.2.4 Ranges](#124-ranges)
+    - [1.2.5 Strings](#125-strings)
+    - [1.2.5 Sets](#125-sets)
+    - [1.2.6 Dictionaries](#126-dictionaries)
+  - [Part 1.3: Manipulating objects](#part-13-manipulating-objects)
+    - [Part 1.3.1 Dynamic Typing](#part-131-dynamic-typing)
+  - [Part 1.4:](#part-14)
+  - [Part 1.5:](#part-15)
+- [Week 2: Python Libraries and Concepts used in Research](#week-2-python-libraries-and-concepts-used-in-research)
+- [Weeks 3 \& 4: Case Studies](#weeks-3--4-case-studies)
+- [Week 5: Statistical Learning](#week-5-statistical-learning)
+
 # Week 1: Basics of Python 3
 Review of basic Python 3 language concepts and syntax.
 1. `yield`: used to create generator functions. The yield keyword is used to define the points at which the generator function should pause and "yield" a value
@@ -53,7 +77,7 @@ Review of basic Python 3 language concepts and syntax.
 - python has 2 operating modes:
     1. interactive : writing code in cells and running each cell
     2. standard : writing and running whole file
-- python3 is not backword compatible
+- python3 is not *backword compatible*
     Backward compatibility refers to the ability of a system, software, or protocol to function properly and support older versions or implementations. When a system is backward compatible, it ensures that newer versions or updates can work seamlessly with older versions or implementations without causing any compatibility issues or breaking existing functionality.
     
 - python consists of objects
@@ -146,6 +170,55 @@ Review of basic Python 3 language concepts and syntax.
     x.shape     # data attribute
     x.mean()    # method
     ```
+
+- *singleton objects in python*
+  - is an object that is intended to have only one instance throughout the program's execution
+  - regardless of how many times you attempt to create an instance of a singleton object, you will always receive the same instance
+  ```python
+  class SingletonClass:
+    _instance = None
+
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            cls._instance = super().__new__(cls, *args, **kwargs)
+        return cls._instance
+
+    obj1 = SingletonClass()
+    obj2 = SingletonClass()
+
+    print(obj1 is obj2)  # True
+  ```
+  - built-in objects that are considered *singletons*
+    1. `None`: The object representing the absence of a value.
+    2. `True`: The object representing the boolean value "true".
+    3. `False`: The object representing the boolean value "false".
+    4. `NotImplemented`: The object representing the absence of implementation for a specific operation.
+        ```python
+        class MyClass:
+            def __eq__(self, other):
+                return NotImplemented
+
+        obj1 = MyClass()
+        obj2 = MyClass()
+
+        print(obj1 == obj2)  # Output: NotImplemented
+        ```
+        * `MyClass` that overrides the `__eq__()` method, which is used for equality comparison (`==`). In this case, the implementation of the method simply returns `NotImplemented`
+    5. `Ellipsis`: The object representing an ellipsis (...) used in slicing or indexing operations to indicate a range or omission of elements
+       ```python
+        my_list = [1, 2, 3, 4, 5]
+        print(my_list[1:3])         # Output: [2, 3]
+        print(my_list[1:3, ...])    # Output: [2, 3, 4, 5]
+
+        import numpy as np
+
+        arr = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+        # selects the second element from each row
+        print(arr[..., 1])  # Output: [2, 5, 8]
+
+
+       ``` 
 
 ### 1.1.3 Modules and Methods
 
@@ -274,12 +347,11 @@ Review of basic Python 3 language concepts and syntax.
     ```
 
 ### 1.1.6 Expressions and booleans
+
 - `True, False`
 - *boolean operations*
     ```python
-    and
-    or
-    not
+    and, or, not
     ```
 - *comparison opertions* work on single objects or sequences (compares each element in sequence)
     ```python
@@ -292,7 +364,7 @@ Review of basic Python 3 language concepts and syntax.
     [1, 2] == [1, 2]    # True
     [1, 2] == [1, 3]    # False
     ```
-    - `is` (same identity) compares the references, are they the same object or not
+    - `is` (same identity) compares the references, are they the same object or not, used for identity comparison
     ```python
     [1, 2] is [1, 2]            # False
     [1, 2] is [1, 3]            # False
@@ -310,8 +382,238 @@ Review of basic Python 3 language concepts and syntax.
     x == y                      # True
     ```
     - when comparing `float == int`, python converts the `int` to `float` and compares them
+    - cases when `is` and `==` give the same result
+      - [*Singleton Objects*](#112-objects-singleton-objects-in-python): singleton objects like `True`, `False`, and `None`, both operators will yield the same result because there is only one instance of each object.
+      - 
 
-## Part 1.2
+## Part 1.2: Sequence objects
+
+### 1.2.1
+```python
+s = ['a', 'b', 'c']
+s[0]        # 'a'
+s[-1]       # 'c'
+
+print((1, 2, 3)[-0])        # 0
+print((1, 2, 3)[-0:0])      # ()
+```
+### 1.2.2 Lists
+```python
+nums = [2, 4, 6, 8]
+
+nums[-1]        # 8
+
+nums[-1] = 10       # [2, 4, 6, 10]
+
+# concatenation
+x = [12, 14, 16]
+nums += x           # [2, 4, 6, 10, 12, 14, 16]
+
+nums.reverse()      # [16, 14, 12, 10, 6, 4, 2]
+
+nums.sort()         # [2, 4, 6, 10, 12, 14, 16]
+                    # sorts the given list
+
+sorted(nums)        # returns a new sorted list which was constructed from nums
+
+
+len(nums)          # returns the length of a sequence
+
+nums.append(4)      # appends 4 to the end of the list
+
+# append, reverse, sort methods return nothing because they are in-place methods, meaning they alter the content of the original list. 
+```
+- stores homogenious types
+- mutable data structure
+  
+### 1.2.3 Tuples
+- immutable
+- usually used to store heteregineous items
+- usually used when you want to return more than one object in python function
+```python
+t = (1, 2, 5, 7)
+
+len(t)      # 4
+
+print(t + (9, 11))      # (1, 2, 5, 7, 9, 11)
+
+print(t[1])             # 2
+
+# packing unpacked numbers
+
+x = 12.1
+y = 24.61
+
+# packing tuple
+coordinate = (x, y)
+type(coordinate)            # tuple
+
+# unpacking typle
+(c1, c2) = coordinate       # c1 = 12.1
+# c1, c2 = coordinate       # c2 = 24.61
+coordinates = [(i*0.1, i*0.54) for i in range(1, 10)]
+print(coordinates)
+
+for (x, y) in coordinates:
+    print(x, y)
+
+c = (1, 2)
+type(c)         # tuple
+
+c = (1)
+type(c)         # int
+
+c = (1,)
+type(c)         # tuple
+
+c = 1,
+type(c)         # tuple
+```
+### 1.2.4 Ranges
+- Immutable sequences of integers
+```python
+rng = range(5)
+print(list(rng))        # [0. 1, 2, 3, 4]
+```
+### 1.2.5 Strings
+- Immutable
+```python
+str = 'rizo`
+print(str[-2:0])        # zo
+
+# 3 * str = str + str + str = 'rizorizori'
+
+dir(str)        # to see attributes of str
+
+str.replace("this", "by this")      # returns a new changed string
+
+str.split(" ")      # returns list
+
+name = 'Ali'
+
+name.upper()        # to make str uppercase
+name.lower()        # to make str lowercase
+```
+
+### 1.2.5 Sets
+- unordered collection of distinct hashable object
+- sets used for immutable objects like numbers and strings, not for dictionaries and lists
+- `set` **mutable**
+- `frozen set`  **immutable** after initialization
+- cannot be indexed
+- elements can't be duplicated
+```python
+ids = set()
+
+ids = set([1, 2, 3, 4])
+
+len(ids)        # 7
+
+ids.add(5)      # {1, 2, 3, 4, 5}
+
+
+ids.pop()       # removes arbitrary object from set and returns it
+
+ids = set(range(0, 10))         # {0, 1, ... 9}
+
+males = set([1, 2, 3, 4, 5])
+
+# set difference operation
+females = ids - males
+
+# set unition
+everyone = males | females
+
+# intersection
+both = everyone & females
+
+
+word = "antidisestablishmentarism"
+unique_letters = set(word)
+print(len(unique_letters))
+```
+- the `x in y` operation checks whether `x` is a member of the set `y`, whereas the `x.issubset(y)` method checks whether all elements of `x` are also elements of `y`.
+```python
+x = {1, 2}
+y = {1, 2}
+print(x.issubset(y))        # True
+print(x in y)               # False
+```
+### 1.2.6 Dictionaries
+- mappings from `key` objecs to `value` objects
+- pair `{key: Immutable, value: anything}`
+- used fastly to look up in unordered data
+- not sequences, do not maintain order
+```python
+age = {}                        # initialize 1
+age = dict()                    # initialize 2
+
+
+age = {'Rizo': 21, 'Yehia': 22}
+
+age['Rizo'] += 1                # increasing value in dictionary
+
+print(list(age.values()))       # [22, 22]
+print(age.keys())               # dict_keys(['Rizo', 'Yehia'])
+
+age['Osama'] = 21               # will autoatically add Osama to dict
+
+# checking for membership
+print('Osama' in age)
+print(22 in age)
+
+
+age={'Tim':29, 'Jim':31, 'Pam':27, 'Sam':35}
+age[0]                          # error because there is no key 0 in the dictionary.
+
+
+```
+## Part 1.3: Manipulating objects
+
+### Part 1.3.1 Dynamic Typing
+- Statically typed: type checking during compile-time
+- Dynamically typed: type checking during run-time
+- variable, object, reference `x = 3`
+  1. create object `3`
+  2. create a variable `x`
+  3. reference `x` -> `3`
+- variable names are always linked to objects not to other variables
+- thus variable (`x`) is a reference to given object (`3`)
+```python
+# immutable objects
+x = 3               # create object, create variable, assign a reference
+y = x               # object exists, create variable, assign a reference. y is not referencing x, but 3
+y = y - 1           # create obj 2, variable exists, assign a reference 
+                    # y = 2
+                    # x = 3
+
+# mutable objects
+l1 = [1, 2, 3, 4]       # create obj, create variable, reference obj
+l2 = l1                 # obj created, create variable, reference that same obj.
+l2[0] = 12              # l1 = [12, 2, 3, 4] 
+                        # l2 = [12, 2, 3, 4]
+```
+- mutable objects might have the identical content but different ids
+```python
+l = [1, 2, 3]
+m = [1, 2, 3]
+print(l == m)               # True
+print(l is m)               # False, because id(l) and id(m)
+
+
+# creating copy without referencing 1 way
+L = [1, 2, 3]
+M = list(L)         # refer to different object
+
+# creating copy without referencing 2 way
+L = [1, 2, 3]
+M = L[:]
+```
+
+## Part 1.4:
+
+## Part 1.5:
+
 
 # Week 2: Python Libraries and Concepts used in Research
 Introduction to Python modules commonly used in scientific computation, such as NumPy.
