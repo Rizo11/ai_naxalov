@@ -494,6 +494,50 @@ name = 'Ali'
 name.upper()        # to make str uppercase
 name.lower()        # to make str lowercase
 ```
+- `string[start_included:stop_excluded]`
+- `string[start_included:stop_excluded:step]`
+- **String constandts**
+```python
+import string
+
+print(string.ascii_lowercase)       # abcdefghijklmnopqrstuvwxyz
+print(string.ascii_uppercase)       # ABCDEFGHIJKLMNOPQRSTUVWXYZ
+
+print(string.digits)                # 0123456789
+print(string.hexdigits)             # 0123456789abcdefABCDEF
+
+print(punctuation)       # !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+# The whitespace constant includes spaces, tabs, newline characters, carriage returns, and other similar whitespace characters.
+print(whitespace)        #  
+
+
+
+print(printable)         # 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~
+```
+- **string modification**
+```python
+str = 'that day was June 15, 15:27'
+
+print(str.capitalize())         # That day was june 15, 15:27
+print(str.title())              # That Day Was June 15, 15:27
+print(str.upper())              # THAT DAY WAS JUNE 15, 15:27
+print(str.lower())              # that day was june 15, 15:27
+```
+- **string check**
+```python
+str = 'that day was June 15, 15:27'
+print(str.isalpha())            # False
+print(str.isdigit())            # False
+print(str.islower())            # False
+print(str.isupper())            # False
+print(str.isspace())            # False
+str = 'and'
+print(str.isidentifier())       # True
+```
+- **string search**
+```python
+
+```
 
 ### 1.2.5 Sets
 - unordered collection of distinct hashable object
@@ -547,7 +591,7 @@ print(x in y)               # False
 ```python
 age = {}                        # initialize 1
 age = dict()                    # initialize 2
-
+print(type({}))                 # same as initialization of set, but this line will give dictionary type. To create empty set use set()
 
 age = {'Rizo': 21, 'Yehia': 22}
 
