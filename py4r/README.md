@@ -13,7 +13,8 @@
     - [1.2.4 Ranges](#124-ranges)
     - [1.2.5 Strings](#125-strings)
     - [1.2.5 Sets](#125-sets)
-    - [1.2.6 Dictionaries](#126-dictionaries)
+    - [1.2.6 Dictionaries :closed\_book:](#126-dictionaries-closed_book)
+    - [1.2.7 JSON (Javascript Object Notation):bookmark: vs. Dictionary :closed\_book:](#127-json-javascript-object-notationbookmark-vs-dictionary-closed_book)
   - [Part 1.3: Manipulating objects](#part-13-manipulating-objects)
     - [Part 1.3.1 Dynamic Typing](#part-131-dynamic-typing)
   - [Part 1.4:](#part-14)
@@ -430,17 +431,29 @@ nums.append(4)      # appends 4 to the end of the list
 - immutable
 - usually used to store heteregineous items
 - usually used when you want to return more than one object in python function
+- access by indexing
+- 
 ```python
 t = (1, 2, 5, 7)
+s = 1, 2                # also tuple
 
-len(t)      # 4
+len(t)                  # 4
 
-print(t + (9, 11))      # (1, 2, 5, 7, 9, 11)
+print(t + (9, 11))      # Concatenation (1, 2, 5, 7, 9, 11)
+print(s*3)              # Repetition (1, 2, 1, 2, 1, 2)
+print(t[1])             # indexing 2
+print(s in t)           # Membership False
+print(1 in t)           # Membership True
 
-print(t[1])             # 2
+
+# tuple methods
+t.count(1)              # returns number of timers specified value is used in tuple
+t.index(3)              # returns the index(closes to the beginning) of value in tuple
 
 # packing unpacked numbers
-
+a, c, b = 1, 2, 3       # a = 1
+                        # b = 2
+                        # c = 3
 x = 12.1
 y = 24.61
 
@@ -468,6 +481,94 @@ type(c)         # tuple
 
 c = 1,
 type(c)         # tuple
+```
+
+- **`zip(iterator1, iterator2, iterator3 ...)`**
+- takes iterables(0+) and aggregates them into tuple are return them
+- powerful tool for iterating over multiple iterables simultaneously
+```python
+names = ["Alice", "Bob", "Charlie"]
+ages = [25, 30, 35]
+countries = ["USA", "UK", "Canada"]
+
+for name, age, country in zip(names, ages, countries):
+    print(f"{name} is {age} years old and lives in {country}")
+
+# Output:
+# Alice is 25 years old and lives in USA
+# Bob is 30 years old and lives in UK
+# Charlie is 35 years old and lives in Canada
+
+
+# Transposing matrix using zip()
+matrix = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+print(matrix)
+matrixTr = list(zip(*matrix))
+for i in matrixTr:
+    print(i)
+
+# output:
+# (1, 4, 7)
+# (2, 5, 8)
+# (3, 6, 9)
+
+
+# Enumerating pairs: This allows us to print the index along with each item.
+items = ["apple", "banana", "orange", "grape"]
+
+for i, item in enumerate(items):
+    print(f"Item {i+1}: {item}")
+# output:
+# Item 1: apple
+# Item 2: banana
+# Item 3: orange
+# Item 4: grape
+
+
+# Creating dictionaries
+keys = ["name", "age", "country", "extra_key_without_value"]
+values = ["Alice", 25, "USA"]
+
+person = dict(zip(keys, values))
+print(person)
+# output:
+# {'name': 'Alice', 'age': 25, 'country': 'USA'}
+``` 
+
+- Packing & Unpacking (**`*`**)
+```python
+numbers = [1, 2, 3, 4, 5]
+a, *b, c = numbers
+print(a)  # 1
+print(b)  # [2, 3, 4]
+print(c)  # 5
+
+
+# Unpacking from a Function Return
+def get_numbers():
+    age = 29
+    longitude = 45.55
+    latitude = 12.67
+    id = "fkfj43u38d"
+    return age, longitude, latitude, id
+
+a, *b, c = get_numbers()
+
+print(a)  # 29
+print(b)  # [45.55, 12.67]
+print(c)  # fkfj43u38d
+
+
+# Unpacking in Function Arguments
+def multiply(a, b, c):
+    return a * b * c
+
+numbers = [2, 3, 4]
+result = multiply(*numbers)
+
+print(result)  # 24
+
+
 ```
 ### 1.2.4 Ranges
 - Immutable sequences of integers
@@ -540,12 +641,12 @@ print(str.isidentifier())       # True
 ```
 
 ### 1.2.5 Sets
-- unordered collection of distinct hashable object
-- sets used for immutable objects like numbers and strings, not for dictionaries and lists
-- `set` **mutable**
-- `frozen set`  **immutable** after initialization
-- cannot be indexed
-- elements can't be duplicated
+1. unordered collection of distinct hashable object
+2. sets used for immutable objects like numbers and strings, not for dictionaries and lists
+3. `set` **mutable**
+4. `frozen set`  **immutable** after initialization
+5.  cannot be indexed
+6.  elements can't be duplicated
 ```python
 ids = set()
 
@@ -554,6 +655,10 @@ ids = set([1, 2, 3, 4])
 len(ids)        # 7
 
 ids.add(5)      # {1, 2, 3, 4, 5}
+
+x = {1, 2, 3, 4, 5}
+d = {"one": 1, "two":2}
+x.update(d)     # {1, 2, 3, 4, 5, 'one', 'two'}
 
 
 ids.pop()       # removes arbitrary object from set and returns it
@@ -576,6 +681,12 @@ word = "antidisestablishmentarism"
 unique_letters = set(word)
 print(len(unique_letters))
 ```
+- `set.update(any_iterable)`
+  - `list`, `set`, `tuple`, `dict`(`keys` will be added to `set`), `str`(`chars` will be added to `set`)
+- `set.remove(element)`: remores specified element from the set
+  - :red_circle: error if element doesn't exist
+- `set.discard(element)`: remove element from the set
+  - :heavy_check_mark: no errors if element doesn't exist
 - the `x in y` operation checks whether `x` is a member of the set `y`, whereas the `x.issubset(y)` method checks whether all elements of `x` are also elements of `y`.
 ```python
 x = {1, 2}
@@ -583,12 +694,14 @@ y = {1, 2}
 print(x.issubset(y))        # True
 print(x in y)               # False
 ```
-### 1.2.6 Dictionaries
-- mappings from `key` objecs to `value` objects
+### 1.2.6 Dictionaries :closed_book:
+- mappings from `key` :key: objecs to `value` :lock: objects
 - pair `{key: Immutable, value: anything}`
 - used fastly to look up in unordered data
 - not sequences, do not maintain order
 ```python
+
+# CRUD
 age = {}                        # initialize 1
 age = dict()                    # initialize 2
 print(type({}))                 # same as initialization of set, but this line will give dictionary type. To create empty set use set()
@@ -602,6 +715,12 @@ print(age.keys())               # dict_keys(['Rizo', 'Yehia'])
 
 age['Osama'] = 21               # will autoatically add Osama to dict
 
+age.get('Rizo', 0)              # get value of 'Rizo'. If not 'Rizo', return 0
+age.get('Azamat')               # get value of 'Azamat'. If no 'Azamat', return None
+
+age.pop('Rizo')                 # remove pair with value 'Rizo'. If not 'Rizo', raise exception
+age.popitem()                   # remove last pair from dictionary, and return. If dict is empty, raise exception
+
 # checking for membership
 print('Osama' in age)
 print(22 in age)
@@ -609,9 +728,61 @@ print(22 in age)
 
 age={'Tim':29, 'Jim':31, 'Pam':27, 'Sam':35}
 age[0]                          # error because there is no key 0 in the dictionary.
-
-
 ```
+- `dict.keys()`: returns immutable list of type `<class 'dict_keys'>` containing dict keys.
+- `dict.values()`: returns immutable list of type `<class 'dict_values'>` containing dict values
+- `dict.items()`: returns immutable list of typles of type `<class 'dict_items'>` containing key-value pairs
+```python
+for i in dictionary:            # here you loop through dict keys
+    i is dictionary key
+
+for i, j in dictionary:         # to loops through key-value pairs
+    i is key, j is value
+```
+### 1.2.7 JSON (Javascript Object Notation):bookmark: vs. Dictionary :closed_book:
+1.  Syntax: Both defined using `{}` and `:`. But in `JSON` both side of `:` should be surrounded by double quotes(`""`)
+```python
+my_dict = {"key1": "value1", "key2": "value2"}
+
+# JSON
+{
+  "key1": "value1",
+  "key2": "value2"
+}
+```
+2. `JSON` supports *strings*, *numbers*, *boolean* values, *null*, *arrays* (similar to Python lists), and *objects* (similar to Python dictionaries).
+3. Accessing Data: In Python, you can use square brackets `[]` to access `dictionary` values. In `JSON`, you can access values using dot notation or square brackets.
+```python
+value = my_dict["key1"]
+"value": my_json.key1
+"value": my_json[key1]
+```
+4. `Dictionary` is a data type, while `JSON` is data representation (file).
+
+- **Serialization** refers to the process of converting an object into a format that can be easily stored, transmitted, or reconstructed at a later time. In the context of programming, serialization is commonly used to convert complex data structures or objects into a serialized form, such as a string or binary representation, that can be saved to a file or sent over a network.
+
+- from `python` to `JSON`:
+  - `json.dumps(s)`
+  - returns `str`
+```python
+
+# from json to python
+import json
+
+file = open('data.json', 'r')
+
+data = file.read()
+
+dictionary_py = json.loads(data)
+
+
+# from python to json
+json_obj = json.dumps(dictionary_py)
+json_file = open("data.json", 'w')
+json_file.write(json_obj)
+json_file.close()
+```
+
 ## Part 1.3: Manipulating objects
 
 ### Part 1.3.1 Dynamic Typing
