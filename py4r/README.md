@@ -7,7 +7,7 @@
     - [1.1.5 random.choice(seq)](#115-randomchoiceseq)
     - [1.1.6 Expressions and booleans](#116-expressions-and-booleans)
   - [Part 1.2: Sequence objects](#part-12-sequence-objects)
-    - [1.2.1](#121)
+    - [1.2.1 Slicing](#121-slicing)
     - [1.2.2 Lists](#122-lists)
     - [1.2.3 Tuples](#123-tuples)
     - [1.2.4 Ranges](#124-ranges)
@@ -15,6 +15,7 @@
     - [1.2.5 Sets](#125-sets)
     - [1.2.6 Dictionaries :closed\_book:](#126-dictionaries-closed_book)
     - [1.2.7 JSON (Javascript Object Notation):bookmark: vs. Dictionary :closed\_book:](#127-json-javascript-object-notationbookmark-vs-dictionary-closed_book)
+    - [1.2.8 File handling](#128-file-handling)
   - [Part 1.3: Manipulating objects](#part-13-manipulating-objects)
     - [Part 1.3.1 Dynamic Typing](#part-131-dynamic-typing)
   - [Part 1.4:](#part-14)
@@ -389,14 +390,21 @@ Review of basic Python 3 language concepts and syntax.
 
 ## Part 1.2: Sequence objects
 
-### 1.2.1
+### 1.2.1 Slicing
 ```python
 s = ['a', 'b', 'c']
 s[0]        # 'a'
 s[-1]       # 'c'
 
-print((1, 2, 3)[-0])        # 0
-print((1, 2, 3)[-0:0])      # ()
+print((1, 2, 3)[-0])            # 0
+print((1, 2, 3)[-0:0])          # ()
+
+my_list = [1, 2, 3, 4, 5]
+sliced_list = my_list[1:-1]      # [2, 3, 4]
+
+sliced_list = my_list[-3:]       # [3, 4, 5]
+
+my_list[::-1]                    # [5, 4, 3, 2, 1]
 ```
 ### 1.2.2 Lists
 ```python
@@ -421,11 +429,53 @@ sorted(nums)        # returns a new sorted list which was constructed from nums
 len(nums)          # returns the length of a sequence
 
 nums.append(4)      # appends 4 to the end of the list
-
-# append, reverse, sort methods return nothing because they are in-place methods, meaning they alter the content of the original list. 
+# append, reverse, sort methods return nothing because they are
+# in-place methods, meaning they alter the content of the original list. 
 ```
-- stores homogenious types
 - mutable data structure
+- `extend(iterable)`: addes the specified iterables to the end of the current list
+- `index(element, start, end)`: returns the position at the first occurence of the specified value
+  - `start` search from (including)
+  - `end` till (excluding)
+- `count(x)` return the number of times `x` appears in the list
+- `pop()` remove last element from the list and return
+- split9
+```python
+lst = ['s', 5, {}, set(), (1,)]
+
+lst.extend((1, 2, 3))                 # ['s', 5, {}, set(), (1,), 1, 2, 3]
+
+lst.index({})                         # 2
+lst.count({})                         # 1
+
+lst[::-1]                             # [3, 2, 1, (1,), set(), {}, 5, 's']
+
+while lst:
+    print(lst.pop())
+
+
+# Example: Doubling each element in a list using map()
+numbers = [1, 2, 3, 4, 5]
+doubled_numbers = list(map(lambda x: x * 2, numbers))
+
+
+from collections import namedtuple
+# Example: Using a namedtuple to represent a Point
+Point = namedtuple('Point', ['x', 'y'])
+point_list = [Point(1, 2), Point(3, 4), Point(5, 6)]
+
+
+# Example: Pairing values from two lists
+# iterating multiple lists in once
+names = ["Alice", "Bob", "Charlie"]
+ages = [25, 30, 35]
+pairs = list(zip(names, ages))
+
+
+# returns a new sorted list, leaving the original list unchanged.
+numbers = [5, 2, 8, 1, 4]
+sorted_numbers = sorted(numbers)
+```
   
 ### 1.2.3 Tuples
 - immutable
@@ -572,9 +622,16 @@ print(result)  # 24
 ```
 ### 1.2.4 Ranges
 - Immutable sequences of integers
+- `range(start, stop, step)`
 ```python
 rng = range(5)
 print(list(rng))        # [0. 1, 2, 3, 4]
+
+# Generate even numbers from 0 to 10
+even_numbers = range(0, 11, 2)
+
+# Generate a decreasing sequence
+decreasing_sequence = range(10, 0, -1)
 ```
 ### 1.2.5 Strings
 - Immutable
@@ -597,7 +654,7 @@ name.lower()        # to make str lowercase
 ```
 - `string[start_included:stop_excluded]`
 - `string[start_included:stop_excluded:step]`
-- **String constandts**
+- **String constants**
 ```python
 import string
 
@@ -623,21 +680,47 @@ print(str.capitalize())         # That day was june 15, 15:27
 print(str.title())              # That Day Was June 15, 15:27
 print(str.upper())              # THAT DAY WAS JUNE 15, 15:27
 print(str.lower())              # that day was june 15, 15:27
+
+str.strip()                     # removes any whitespace at the beginning or end of the line
+
+str = 'I eat food'
+print(str.replace(' ', ','))    # return copy of string with all occurences of substr old remplaced by new
+'x'.center(5, '*')
+
 ```
 - **string check**
 ```python
 str = 'that day was June 15, 15:27'
-print(str.isalpha())            # False
-print(str.isdigit())            # False
-print(str.islower())            # False
-print(str.isupper())            # False
-print(str.isspace())            # False
+print(str.isalpha())                # False
+print(str.isdigit())                # False
+print(str.islower())                # False
+print(str.isupper())                # False
+print(str.isspace())                # False
 str = 'and'
-print(str.isidentifier())       # True
+print(str.isidentifier())           # False
+print("hello".isidentifier())       # True
+print("123abc".isidentifier())      # False
+print("_variable_".isidentifier())  # True
+print("if".isidentifier())          # True
+# used to check whether a given string is a valid identifier. An
+# identifier is a name used to identify a variable, function,
+# class, module, or any other object in Python
 ```
 - **string search**
 ```python
+name = "Emperor Palpatine"
 
+# string.index(substr, start, end)returns the index of a substring inside the string.
+# If the substring is not found, it raises an exception.
+print(name.index('e'))          # 3
+
+# string.find(substr, start, end) returns the index of first occurence of the substr.
+# If not found, it returns -1
+print(name.find('e'))           # 3
+
+# string.cunt(substr, start, end) returns the number of non-overlapping
+# occurences of substring sub in the range[start, end]
+print(name.count('e'))          # 2
 ```
 
 ### 1.2.5 Sets
@@ -781,6 +864,114 @@ json_obj = json.dumps(dictionary_py)
 json_file = open("data.json", 'w')
 json_file.write(json_obj)
 json_file.close()
+```
+
+### 1.2.8 File handling
+- `open(file_path, mode='r')`
+  - `file_path` is *required* parameter which is for the pathname (*absolute* or *relative to the current working directory*) of the file
+  - `mode` is *optional*. By default `r` - reading mode
+```python
+f = open('my_file.txt')
+f = open('C:/MSI-GP-Leopard-75/ai/my_file.txt')
+
+
+# with statement ensures that the file is properly closed after we're finished with it
+with open('test.txt', 'r') as file:
+    for line in file:
+        # do something with each line
+        print(line.strip())  # strip() removes any whitespace at the beginning or end of the line
+
+
+# with statement ensures that the file is properly closed after we're finished with it
+with open('test.txt', 'a') as file:
+    file.write('Hello, world!\n')
+    file.write('This is a new line.\n')
+```
+- `file_obj.read(size)`: to read data from `file object`. `size` is `int` to show how many `chars` to read from `file object`.
+- `r` open file for read only
+- `w` open file for write only (override)
+- `a` open file for write only (append)
+- `r+` open file for both reading and writing
+- `x` create a new file
+```python
+try:
+    with open('myfile.txt', 'x') as file:
+        file.write('This is a new file.')
+except FileExistsError:
+    print('The file already exists.')
+```
+- `rb` binary mode (e.g images)
+- **Best practives**
+```python
+# 1. use the `with` statement, also known as the `context manager`,
+# which automatically takes care of closing the file after you're
+# done with it. It ensures proper resource management and exception handling.
+with open("filename.txt", "r") as file:
+    # File operations here
+# File is automatically closed outside the 'with' block
+
+
+# 2. Specify the file encoding
+with open("filename.txt", "r", encoding="utf-8") as file:
+    # Read file contents
+
+
+# 3. Exceptions
+try:
+    with open("filename.txt", "r") as file:
+        # File operations here
+        print("File found")
+except FileNotFoundError:
+    print("File not found.")
+except PermissionError:
+    print("Permission denied.")
+
+
+# use absolute or os.path for file path
+import os
+
+# Absolute path
+file_path = "/path/to/filename.txt"
+
+# Using os.path
+base_dir = os.path.dirname(__file__)
+file_path = os.path.join(base_dir, "filename.txt")      # /home/rizo/ai/filename.txt
+
+
+# Validate file existence and permissions
+import os
+
+file_path = "filename.txt"
+
+if os.path.exists(file_path):
+    if os.access(file_path, os.R_OK):
+        with open(file_path, "r") as file:
+            # Read file contents
+    else:
+        print("No read access to the file.")
+else:
+    print("File does not exist.")
+
+
+# Use file iterators and generators: Python's file objects are
+# iterable, so you can iterate over them line by line, which is
+# memory-efficient for large files. Or use generator functions
+with open("filename.txt", "r") as file:
+    for line in file:
+        # Process line
+
+def process_line(line):
+    # Process the line here, for example, convert it to uppercase
+    return line.title()
+
+def process_file(file_path):
+    with open(file_path, "r") as file:
+        for line in file:
+            yield process_line(line.strip())
+
+
+for i in process_file(file_path):
+    # work with processed lines
 ```
 
 ## Part 1.3: Manipulating objects
