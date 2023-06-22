@@ -86,11 +86,19 @@ Review of basic Python 3 language concepts and syntax.
     - **mutable**: values can be changed after being created
     - **immutable**: values cannot be changed after being created/initialized
         
-- `Module`: A module is a single file or script that contains reusable code. It typically consists of functions, classes, or variables that serve a specific purpose. Modules are used to organize code into logical units and promote code reusability. In many programming languages, modules can be imported and used in other scripts or programs to leverage their functionality.
+- `Module`: A module is a single file or script that contains reusable code. It typically consists of functions, classes, or variables that serve a specific purpose. Modules are used to organize code into logical units and promote code reusability. In many programming languages, modules can be imported and used in other scripts or programs to leverage their functionality: any `.py` or `.c` file
+<p align="center">
+  <img src="/home/rizo/ai_naxalov/assets/mod_pkg.jpg" alt="Alt text">
+</p>
 
-- `Library`: A library (also known as a "software library" or "code library") is a collection of precompiled code modules that provide specific functionality or services. Libraries are designed to be reused by multiple programs or projects and can contain a set of modules or classes focused on a particular domain or purpose. Developers can include a library in their projects to access its functionality without having to rewrite the code from scratch.
+- `Package`: A package is a directory or folder that contains multiple Python modules and possibly sub-packages.A package typically includes an __init__.py file, which makes it a package in Python.
 
-- `Package`: A package is a directory or folder that contains multiple Python modules and possibly sub-packages. Packages are used to organize related modules and provide a hierarchical structure to manage larger codebases. A package typically includes an __init__.py file, which makes it a package in Python. Packages can be imported and used in Python scripts or projects to access the contained modules.
+<p align="center">
+  <img src="/home/rizo/ai_naxalov/assets/pkg13.jpg
+  " alt="Alt text">
+</p>
+
+- `Packages` are a collection of related `modules` that aim to achieve a common goal. Finally, the Python standard `library` is a collection of `packages` and `modules` that can be used to access built-in functionality.  For example, the `numpy` library is a collection of packages and modules that provides functionality for numerical computing in Python.
 
 - `Framework`: A framework is a set of pre-written code and tools that provides a foundation or structure for building larger applications. It offers a reusable design or architecture, defines rules and conventions, and provides a collection of functions or classes for solving specific problems. Frameworks can include libraries, modules, and other components. They are typically more comprehensive and opinionated compared to libraries. Developers use frameworks to accelerate development by leveraging the pre-built components and established patterns they provide.
 
