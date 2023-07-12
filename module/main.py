@@ -16,3 +16,6 @@ print(trigTools.sineOf(math.tau))
 printTools.mPrint()
 mPrint()
 printSub.myName()
+
+import sys
+print(sys.path)

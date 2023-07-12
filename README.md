@@ -16,6 +16,7 @@
     - [1.2.6 Dictionaries :closed\_book:](#126-dictionaries-closed_book)
     - [1.2.7 JSON (Javascript Object Notation):bookmark: vs. Dictionary :closed\_book:](#127-json-javascript-object-notationbookmark-vs-dictionary-closed_book)
     - [1.2.8 File handling](#128-file-handling)
+    - [1.2.9 Functions](#129-functions)
   - [Part 1.3: Manipulating objects](#part-13-manipulating-objects)
     - [Part 1.3.1 Dynamic Typing](#part-131-dynamic-typing)
   - [Part 1.4:](#part-14)
@@ -289,6 +290,10 @@ Review of basic Python 3 language concepts and syntax.
 
         ```
 - **Import**
+<p align="center">
+  <img src="/home/rizo/ai_naxalov/assets/import.jpg
+  " alt="Alt text">
+</p>
     - provides access to names defined in the imported module, enabling you to use those names in your current code.
     - Here's what happens when you use `import` in Python:
 
@@ -982,6 +987,136 @@ def process_file(file_path):
 for i in process_file(file_path):
     # work with processed lines
 ```
+
+### 1.2.9 Functions
+```python
+def f1():
+    return None
+
+def f2():
+    return
+
+def f3():
+    pass
+
+print(f1(), f2(), f3())
+# None, None, None
+```
+- Type hints in python
+```python
+# In the function greeting, the argument name is expected to be of type `str` and
+# the return type `str`. Subtypes are accepted as arguments.
+def greeting(name: str) -> str:
+    return 'Hello ' + name
+```
+- **Parameters** are the variables in the definition of a function. In other words, they exist in the function signature and will be used as variables in the function body.
+- **Arguments** are the actual values that were passed to the function when we call it. In other words, an argument could be an integer, a string, or any object.
+- **Mandatory and Optional Parameters**: When we initialize parameter with defautls value it becomes optional, and mandatory otherwise.
+```py
+def my_funct(man1, man2, opt1='0', opt2=-1):
+    print('man1:', man1)
+    print('man2:', man2)
+    print('opt1:', opt1)
+    print('opt2:', opt2)
+```
+- For the optional parameters, we don’t have to pass any arguments. If we don’t, the default value will be used.
+- **All the mandatory parameters must be in the front**
+- **Positional Arguments & Keyword Arguments**
+    - positional argument is when we pass arguemnts to functin without parameter name, as long as we keep the order in function signature.
+    - keyword argmument is when we pass arguments to function with parameter name. Order of passing doesn't matter.
+    ```py
+    def my_func(man1, man2): pass
+
+    # positional
+    my_func('a', 'b')
+
+    # keyword
+    my_func(man1='a', man2='b')
+    my_func(man2='a', man1='b')
+    ```
+- **Positional Arguments Must be in the Front**
+```py
+# my_func(man1, man2, opt1=0, opt2='')
+
+# error: pos arg 'b' following keyword
+my_func(man1='a', 'b', 10, opt2='c')
+
+# error: pos arg 'c' is following 'opt1'
+my_func(man1='a', man2='b', opt1=10, 'c')
+```
+- **Enforcing keyword arguments**
+```py
+# enforcing all args to the right of *, to be passes as keyword args
+def my_func(man1, *, man2):
+    print(man1)
+    print(man2)
+
+# error
+my_func('a', 'b')
+
+# correct
+my_func('a', man2 = 'b')
+```
+
+- **Variable-length parameters**
+    - **Variable-length parameter — `*args`**
+        - pass as many arguments as we wish
+        - arguments will be accessible in the function as a tuple
+        ```py
+        def my_func(*args):
+            print(args)
+
+        my_func('a', 'b', 'c', 'd')
+        # output:
+        # ('a', 'b', 'c', 'd')
+        ```
+    - **Keyword variable-length parameter — `**kwargs`**
+        - *KeyWord ARGumentS*
+        - need to specify the key and the values for each argument
+        - arguments will be received as a dictionary
+        ```py
+        def my_funct(**kwargs):
+            print(kwargs)
+        my_funct(Age = 45, Job = 'Piper')
+        # output:
+        # {'Age': 45, 'Job': 'Piper'}
+        ```
+    - `**kwargs` should not be before `*args`
+    - can use any names for `**kwargs` and `*args`. The only important thing is to use the single asterisk (`*`) for variable-length parameters and double asterisks (`**`) for the keyword ones.
+- When we mix all types of parameters, `**kwargs` should be at the end.
+```py
+def my_func(man, opt='default', *args, **kwargs):
+    print("man:", man)
+    print("opt:", opt)
+    print("args:", args)
+    print("kwargs:", kwargs)
+
+# value `a` is considered as the value for the optional parameter,
+# the optional parameter is not optional anymore
+# function call is valid if we want both a, b and c are passed to the args
+my_func('mandatory value', 'a', 'b', 'c', name='Chris', age=33)
+# output:
+# man: mandatory value
+# opt: a
+# args: ('b', 'c')
+# kwargs: {'name': 'Chris', 'age': 33}
+
+# fix
+def my_func(man, *args, opt='default', **kwargs):
+    print(man)
+    print(opt)
+    print(args)
+    print(kwargs)
+my_func('mandatory value', 'a', 'b', 'c', name='Chris', age=33)
+# output:
+# man: mandatory value
+# args: ('a', 'b', 'c')
+# opt: default
+# kwargs: {'name': 'Chris', 'age': 33}
+```
+
+
+
 
 ## Part 1.3: Manipulating objects
 
