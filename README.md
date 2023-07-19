@@ -1115,8 +1115,9 @@ my_func('mandatory value', 'a', 'b', 'c', name='Chris', age=33)
 # kwargs: {'name': 'Chris', 'age': 33}
 ```
 
-
-
+### Scopes
+- **Variable scope** is a part of the code where that variable is visible
+- 
 
 ## Part 1.3: Manipulating objects
 

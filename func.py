@@ -54,7 +54,7 @@ my_func1('mandatory value', 'a', 'b', 'c', name='Chris', age=33)
 
 x = 5
 def fn1():
-    x += 1
+    x = 1 + x
     print(x)
 
 x = 4  
